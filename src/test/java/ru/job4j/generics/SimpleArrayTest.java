@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import org.junit.Test;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SimpleArrayTest {
 
@@ -90,4 +91,10 @@ public class SimpleArrayTest {
         assertThat(it.hasNext(), is(false));
     }
 
+    @Test(expected = NoSuchElementException.class)
+    public void whenNextThrowException() {
+        SimpleArray<Integer> simple = new SimpleArray(3);
+        Iterator it = simple.iterator();
+        it.next();
+    }
 }
