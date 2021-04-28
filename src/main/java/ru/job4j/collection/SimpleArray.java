@@ -46,8 +46,8 @@ public class SimpleArray<T> implements Iterable<T> {
         if (size == container.length) {
             container = Arrays.copyOf(container, size + 1);
         }
-        container[size++] = model;
         modCount++;
+        container[size++] = model;
     }
 
     /**
@@ -76,9 +76,6 @@ public class SimpleArray<T> implements Iterable<T> {
             public T next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                }
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
                 }
                 return (T) container[cursor++];
             }
