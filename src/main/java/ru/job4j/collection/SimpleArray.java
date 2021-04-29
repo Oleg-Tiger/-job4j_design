@@ -39,12 +39,13 @@ public class SimpleArray<T> implements Iterable<T> {
 
     /**
      * Метод для добавления элемента в конец списка. Если все поля массива container
-     * заполнены, создаётся новый массив с такими же значениями + одной пустой ячейкой.
+     * заполнены, создаётся новый массив с такими же значениями, но количеством ячеек
+     * в 2 раза больше исходного.
      * @param model Элемент, который мы добавляем.
      */
     public void add(T model) {
         if (size == container.length) {
-            container = Arrays.copyOf(container, size + 1);
+            container = Arrays.copyOf(container, size * 2);
         }
         modCount++;
         container[size++] = model;
