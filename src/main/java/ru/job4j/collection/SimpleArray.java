@@ -39,16 +39,24 @@ public class SimpleArray<T> implements Iterable<T> {
 
     /**
      * Метод для добавления элемента в конец списка. Если все поля массива container
-     * заполнены, создаётся новый массив с такими же значениями, но количеством ячеек
-     * в 2 раза больше исходного.
+     * заполнены, вызывается метод arrayExpansion, который расширяет данный массив.
      * @param model Элемент, который мы добавляем.
      */
     public void add(T model) {
         if (size == container.length) {
-            container = Arrays.copyOf(container, size * 2);
+            arrayExpansion();
         }
         modCount++;
         container[size++] = model;
+    }
+
+    /**
+     * Данный метод создаёт новый массив с такими же значениями, как в container,
+     * но количеством ячеек в 2 раза больше исходного и присваивает ссылку на него
+     * массиву container.
+     */
+    public void arrayExpansion() {
+        container = Arrays.copyOf(container, size * 2);
     }
 
     /**
