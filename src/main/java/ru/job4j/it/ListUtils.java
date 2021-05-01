@@ -19,17 +19,13 @@ public class ListUtils {
 
     public static <T> void addAfter(List<T> list, int index, T value) {
         Objects.checkIndex(index, list.size());
-        if (index == list.size() - 1) {
-            list.add(value);
-        } else {
             ListIterator<T> i = list.listIterator();
-            while (i.hasNext()) {
-                if (i.nextIndex() == index + 1) {
+            while (true) {
+                if (i.nextIndex() == index + 1 || i.nextIndex() == list.size()) {
                     i.add(value);
                     break;
                 }
                 i.next();
-            }
         }
     }
 
