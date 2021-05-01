@@ -20,8 +20,8 @@ public class ListUtils {
     public static <T> void addAfter(List<T> list, int index, T value) {
         Objects.checkIndex(index, list.size());
             ListIterator<T> i = list.listIterator();
-            while (true) {
-                if (i.nextIndex() == index + 1 || i.nextIndex() == list.size()) {
+            while (i.nextIndex() <= list.size()) {
+                if (i.nextIndex() == index + 1) {
                     i.add(value);
                     break;
                 }
