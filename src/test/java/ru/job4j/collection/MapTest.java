@@ -5,7 +5,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Objects.hash;
 
 public class MapTest {
     public static void main(String[] args) {
