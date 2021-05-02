@@ -33,14 +33,14 @@ public class ListUtilsTest {
     @Test
     public void whenAddAfterLast() {
         List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2));
-        ListUtils.addAfter(input,2, 3);
+        ListUtils.addAfter(input, 2, 3);
         assertThat(Arrays.asList(0, 1, 2, 3), Is.is(input));
     }
 
     @Test
     public void whenAddAfterNotLast() {
         List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2));
-        ListUtils.addAfter(input,1, 300);
+        ListUtils.addAfter(input, 1, 300);
         assertThat(Arrays.asList(0, 1, 300, 2), Is.is(input));
     }
 
