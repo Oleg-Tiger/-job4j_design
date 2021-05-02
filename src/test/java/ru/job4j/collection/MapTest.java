@@ -9,8 +9,9 @@ import static java.util.Objects.hash;
 
 public class MapTest {
     public static void main(String[] args) {
-        User user = new User("Вася", 3, new GregorianCalendar(1990, 0, 21));
-        User user2 = new User("Вася", 3, new GregorianCalendar(1990, 0, 21));
+        Calendar date = new GregorianCalendar(1990, 11, 12);
+        User user = new User("Вася", 3, date);
+        User user2 = new User("Вася", 3, date);
         Map<User, Object> map = new HashMap<>();
         map.put(user, new Object());
         map.put(user2, new Object());
