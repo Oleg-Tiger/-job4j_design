@@ -49,7 +49,7 @@ public class SimpleMapTest {
         SimpleMap<String, String> sm = new SimpleMap<>();
         sm.insert("Один", "One");
         sm.insert("Два", "Two");
-        Iterator<SimpleMap.Node> it = sm.iterator();
+        Iterator<SimpleMap.Node<String, String>> it = sm.iterator();
         assertThat(it.next().getKey(), is("Один"));
         assertTrue(it.hasNext());
         assertThat(it.next().getValue(), is("Two"));
@@ -60,7 +60,7 @@ public class SimpleMapTest {
         public void whenInsert() {
         SimpleMap<String, String> sm = new SimpleMap<>();
         sm.insert("Один", "One");
-        Iterator<SimpleMap.Node> it = sm.iterator();
+        Iterator<SimpleMap.Node<String, String>> it = sm.iterator();
         sm.insert("Два", "Two");
         it.hasNext();
         }
@@ -69,7 +69,7 @@ public class SimpleMapTest {
     public void whenRemove() {
         SimpleMap<String, String> sm = new SimpleMap<>();
         sm.insert("Один", "One");
-        Iterator<SimpleMap.Node> it = sm.iterator();
+        Iterator<SimpleMap.Node<String, String>> it = sm.iterator();
         sm.delete("Один");
         it.next();
     }
@@ -77,7 +77,7 @@ public class SimpleMapTest {
     @Test(expected = NoSuchElementException.class)
     public void whenHasNotNext() {
         SimpleMap<String, String> sm = new SimpleMap<>();
-        Iterator<SimpleMap.Node> it = sm.iterator();
+        Iterator<SimpleMap.Node<String, String>> it = sm.iterator();
         it.next();
     }
 }

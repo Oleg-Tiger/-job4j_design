@@ -2,7 +2,7 @@ package ru.job4j.collection.map;
 
 import java.util.*;
 
-public class SimpleMap<K, V> implements Iterable<SimpleMap.Node> {
+public class SimpleMap<K, V> implements Iterable<SimpleMap.Node<K, V>> {
     private Node<K, V>[] array;
     private int size = 0;
     private int modCount = 0;
@@ -22,7 +22,7 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node> {
         int hash = hash(key);
         Node<K, V> node = new Node<>(key, value, hash);
         int index = findIndex(hash);
-        if (!cellIsEmpty(index) && !keysAreSame(hash, index, key)) {
+        if (!cellIsEmpty(index) && keysAreDiff(hash, index, key)) {
             return false;
         }
         if (cellIsEmpty(index)) {
@@ -36,7 +36,7 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node> {
     public V get(K key) {
         int hash = hash(key);
         int index = findIndex(hash);
-       if (cellIsEmpty(index) || !keysAreSame(hash, index, key)) {
+       if (cellIsEmpty(index) || keysAreDiff(hash, index, key)) {
             return null;
         }
         return array[index].value;
@@ -45,7 +45,7 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node> {
     public boolean delete(K key) {
         int hash = hash(key);
         int index = findIndex(hash);
-        if (cellIsEmpty(index) || !keysAreSame(hash, index, key)) {
+        if (cellIsEmpty(index) || keysAreDiff(hash, index, key)) {
             return false;
         }
         modCount++;
@@ -69,23 +69,21 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node> {
         return array[index] == null;
     }
 
-    private boolean keysAreSame(int hash, int index, K key) {
-        return (array[index].hash == hash
-                && (array[index].key == key || array[index].key.equals(key)));
+    private boolean keysAreDiff(int hash, int index, K key) {
+        return (array[index].hash != hash
+                || (array[index].key != key && !array[index].key.equals(key)));
     }
 
     private void expansion() {
         SimpleMap<K, V> map = new SimpleMap<>(array.length * 2);
-        Iterator<SimpleMap.Node> it = iterator();
-        while (it.hasNext()) {
-            Node<K, V> temp = it.next();
+        for (Node<K, V> temp : this) {
             map.insert(temp.key, temp.value);
         }
         array = map.array;
     }
 
     @Override
-    public Iterator<SimpleMap.Node> iterator() {
+    public Iterator<SimpleMap.Node<K, V>> iterator() {
        return new Iterator<>() {
             private int cursor = 0;
             final int expectedModCount = modCount;
@@ -111,7 +109,7 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node> {
         };
     }
 
-    public class Node<K, V>  {
+    static class Node<K, V>  {
         private final int hash;
         private final K key;
         private final V value;
