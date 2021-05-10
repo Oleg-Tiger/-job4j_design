@@ -87,7 +87,6 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node<K, V>> {
     public Iterator<SimpleMap.Node<K, V>> iterator() {
        return new Iterator<>() {
             private int cursor = 0;
-            int numberOfReturnedElements = 0;
             final int expectedModCount = modCount;
 
            @Override
@@ -109,7 +108,6 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node<K, V>> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                numberOfReturnedElements++;
                 return array[cursor++];
             }
         };
