@@ -6,6 +6,7 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node<K, V>> {
     private Node<K, V>[] array;
     private int size = 0;
     private int modCount = 0;
+    private static final double LOAD_FACTOR = 0.75;
 
     public SimpleMap() {
         this.array = new Node[16];
@@ -16,7 +17,7 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node<K, V>> {
     }
 
     public boolean insert(K key, V value) {
-        if ((double) size / array.length >= 0.75) {
+        if ((double) size / array.length >= LOAD_FACTOR) {
             expansion();
         }
         int hash = hash(key);
@@ -86,25 +87,30 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node<K, V>> {
     public Iterator<SimpleMap.Node<K, V>> iterator() {
        return new Iterator<>() {
             private int cursor = 0;
+            int numberOfReturnedElements = 0;
             final int expectedModCount = modCount;
-            private Object[] temp = Arrays.stream(array)
-            .filter(Objects::nonNull)
-            .toArray();
 
-            @Override
-            public boolean hasNext() {
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
-                return cursor < size;
-            }
+           @Override
+           public boolean hasNext() {
+               if (expectedModCount != modCount) {
+                   throw new ConcurrentModificationException();
+               }
+               for (int i = cursor; i < array.length; i++) {
+                   if (array[i] != null) {
+                       cursor = i;
+                       return true;
+                   }
+               }
+               return false;
+           }
 
             @Override
             public Node<K, V> next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-             return (Node<K, V>) temp[cursor++];
+                numberOfReturnedElements++;
+                return array[cursor++];
             }
         };
     }
