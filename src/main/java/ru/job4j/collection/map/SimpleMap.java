@@ -6,10 +6,13 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node<K, V>> {
     private Node<K, V>[] array;
     private int size = 0;
     private int modCount = 0;
-    private static final double LOAD_FACTOR = 0.75;
+    private static final float LOAD_FACTOR = 0.75F;
+    private static final short DEFAULT_SIZE = 16;
+    private static final short BIT_SHIFT = 16;
+    private static final short EXPANSION_COEFFICIENT = 2;
 
     public SimpleMap() {
-        this.array = new Node[16];
+        this.array = new Node[DEFAULT_SIZE];
     }
 
     public SimpleMap(int num) {
@@ -17,7 +20,7 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node<K, V>> {
     }
 
     public boolean insert(K key, V value) {
-        if ((double) size / array.length >= LOAD_FACTOR) {
+        if ((float) size / array.length >= LOAD_FACTOR) {
             expansion();
         }
         int hash = hash(key);
@@ -59,7 +62,7 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node<K, V>> {
         if (key == null) {
             return 0;
         }
-        return key.hashCode() ^ (key.hashCode() >>> 16);
+        return key.hashCode() ^ (key.hashCode() >>> BIT_SHIFT);
     }
 
     private int findIndex(int hash) {
@@ -76,7 +79,7 @@ public class SimpleMap<K, V> implements Iterable<SimpleMap.Node<K, V>> {
     }
 
     private void expansion() {
-        SimpleMap<K, V> map = new SimpleMap<>(array.length * 2);
+        SimpleMap<K, V> map = new SimpleMap<>(array.length * EXPANSION_COEFFICIENT);
         for (Node<K, V> temp : this) {
             map.insert(temp.key, temp.value);
         }
