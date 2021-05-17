@@ -1,24 +1,30 @@
 package ru.job4j.collection;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class Analize {
 
     public Info diff(List<User> previous, List<User> current) {
-        int added;
+        Map<Integer, User> users = new HashMap<>();
+        int added = 0;
         int changed = 0;
-        int deleted = 0;
+        int deleted;
         for (User user : previous) {
-            int index = current.indexOf(user);
-            if (index == -1) {
-                deleted++;
+            users.put(user.id, user);
+        }
+        for (User user : current) {
+            if (users.get(user.id) == null) {
+                added++;
             } else {
-                if (!user.name.equals(current.get(index).name)) {
+                if (!users.get(user.id).equals(user)) {
                     changed++;
                 }
             }
         }
-        added = current.size() + deleted - previous.size();
+        deleted = previous.size() - current.size() + added;
         return new Info(added, changed, deleted);
     }
 
@@ -40,16 +46,18 @@ public class Analize {
                 return false;
             }
             User user = (User) o;
-            return id == user.id;
+            return id == user.id
+                    && Objects.equals(name, user.name);
         }
 
         @Override
         public int hashCode() {
-            return Integer.hashCode(id);
+            return Objects.hash(id, name);
         }
     }
 
-    public static class Info {
+
+        public static class Info {
 
         int added;
         int changed;
