@@ -10,7 +10,7 @@ public class Matrix {
                     String str = i * j + "\t";
                     fos.write(str.getBytes());
                 }
-                fos.write("\n".getBytes());
+                fos.write(System.lineSeparator().getBytes());
             }
         } catch (Exception e) {
             e.printStackTrace();
