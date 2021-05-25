@@ -17,13 +17,26 @@ public class ConfigTest {
     }
 
     @Test
-    public void whenPairWithComment() {
+    public void whenPairWithCommentAndEmptyStrings() {
         String path = "./data/pair_with_comment.properties";
         Config config = new Config(path);
         config.load();
-        assertThat(config.value("hibernate.dialect"),
-                is("org.hibernate.dialect.PostgreSQLDialect"));
-        assertThat(config.value("hibernate.connection.url"),
-                is("jdbc:postgresql://127.0.0.1:5432/trackstudio"));
+        assertThat(config.value("name"), is("Petr"));
+        assertThat(config.value("surname"), is("Arsentev"));
+        assertThat(config.value("fullname"), is(Matchers.nullValue()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenTemplateBroken() {
+        String path = "./data/with_broken_template.properties";
+        Config config = new Config(path);
+        config.load();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenTemplateBroken2() {
+        String path = "./data/with_broken_template_2.properties";
+        Config config = new Config(path);
+        config.load();
     }
 }

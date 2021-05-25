@@ -1,5 +1,6 @@
 package ru.job4j.io;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.BufferedReader;
@@ -18,10 +19,15 @@ public class Config {
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             read.lines()
-                    .filter(x -> !x.startsWith("#"))
+                    .filter(x -> !x.startsWith("#") && !x.isEmpty())
                     .map(x -> x.split("="))
-                    .forEach(x -> this.values.put(x[0], x[1]));
-        } catch (Exception e) {
+                    .forEach(x -> {
+                        if (!(x.length == 2)) {
+                            throw new IllegalArgumentException();
+                        }
+                        this.values.put(x[0], x[1]);
+                    });
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
