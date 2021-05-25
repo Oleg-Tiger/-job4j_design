@@ -1,7 +1,6 @@
 package ru.job4j.io;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +13,7 @@ public class LogFilter {
                     .filter(x -> x.contains(" 404 "))
                     .filter(x -> {
                        List<String> list = Arrays.stream(x.split(" "))
-                                .filter(y -> isNumber(y))
+                                .filter(LogFilter::isNumber)
                                 .collect(Collectors.toList());
                        return list.size() > 1 && list.get(list.size() - 2).equals("404");
                     })
@@ -23,6 +22,18 @@ public class LogFilter {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void save(List<String> log, String file) {
+        try (
+                PrintWriter out = new PrintWriter(
+                        new BufferedOutputStream(
+                                new FileOutputStream(file)
+                        ))) {
+            log.forEach(x -> out.write((x + System.lineSeparator())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static boolean isNumber(String str) {
@@ -36,6 +47,6 @@ public class LogFilter {
 
     public static void main(String[] args) {
         List<String> log = filter("log.txt");
-        System.out.println(log);
+        save(log, "404.txt");
     }
 }
