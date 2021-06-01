@@ -1,8 +1,8 @@
 package ru.job4j.io;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
-
 import org.junit.Test;
 
 public class ArgsNameTest {
@@ -19,10 +19,10 @@ public class ArgsNameTest {
         assertThat(jvm.get("Xmx"), is("512"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenGetNotExist() {
         ArgsName jvm = ArgsName.of(new String[] {});
-        jvm.get("Xmx");
+        assertNull(jvm.get("Xmx"));
     }
 
     @Test(expected = IllegalArgumentException.class)
