@@ -19,10 +19,10 @@ public class ConsoleChat {
 
     public void run() {
         try (BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-             PrintWriter dialog = new PrintWriter(new FileWriter(path));
-             BufferedReader answ = new BufferedReader(new FileReader(botAnswers))) {
-            while (answ.ready()) {
-                botAnswersList.add(answ.readLine());
+             PrintWriter dialog = new PrintWriter(new FileWriter(path))
+            ) {
+            if (botAnswersList.isEmpty()) {
+              fillAnswersList();
             }
             String user = console.readLine();
             boolean stop = false;
@@ -37,6 +37,16 @@ public class ConsoleChat {
                 user = console.readLine();
             }
             dialog.print("Пользователь: закончить");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fillAnswersList() {
+        try (BufferedReader answ = new BufferedReader(new FileReader(botAnswers))) {
+            while (answ.ready()) {
+                botAnswersList.add(answ.readLine());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
