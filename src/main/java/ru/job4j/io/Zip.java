@@ -44,6 +44,9 @@ public class Zip {
                     "The input arguments must match the template -d=rootDirectory -e=excludeFileExtension(without \".\") -o=output.zip"
             );
         }
+        if (!Files.exists(Paths.get(dir))) {
+            throw new FileNotFoundException("The source directory does not exist");
+        }
         List<Path> sources = Search.search(
                 Paths.get(dir), x -> !x.toFile().getName().endsWith(String.format(".%s", exclude))
         );
