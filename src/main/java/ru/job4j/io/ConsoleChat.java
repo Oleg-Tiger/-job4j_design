@@ -8,6 +8,7 @@ public class ConsoleChat {
     private final String path;
     private final String botAnswers;
     private final List<String> botAnswersList = new ArrayList<>();
+    private final List<String> dialogList = new ArrayList<>();
     private static final String OUT = "закончить";
     private static final String STOP = "стоп";
     private static final String CONTINUE = "продолжить";
@@ -18,8 +19,7 @@ public class ConsoleChat {
     }
 
     public void run() {
-        try (BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-             PrintWriter dialog = new PrintWriter(new FileWriter(path))
+        try (BufferedReader console = new BufferedReader(new InputStreamReader(System.in))
             ) {
             if (botAnswersList.isEmpty()) {
               fillAnswersList();
@@ -27,16 +27,17 @@ public class ConsoleChat {
             String user = console.readLine();
             boolean stop = false;
             while (!user.equals(OUT)) {
-                dialog.printf("Пользователь: %s%n", user);
+                dialogList.add(String.format("Пользователь: %s", user));
                 if (user.equals(STOP)) {
                     stop = true;
                 } else if (!stop || user.equals(CONTINUE)) {
                     stop = false;
-                    dialog.printf("Робот: %s%n", answer());
+                    dialogList.add(String.format("Робот: %s", answer()));
                 }
                 user = console.readLine();
             }
-            dialog.print("Пользователь: закончить");
+            dialogList.add("Пользователь: закончить");
+            writeDialogToFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,6 +48,15 @@ public class ConsoleChat {
             while (answ.ready()) {
                 botAnswersList.add(answ.readLine());
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeDialogToFile() {
+        try (PrintWriter dialog = new PrintWriter(new FileWriter(path))) {
+            dialogList.forEach(dialog::println);
+            dialogList.clear();
         } catch (IOException e) {
             e.printStackTrace();
         }
