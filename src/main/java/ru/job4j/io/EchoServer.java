@@ -15,8 +15,8 @@ public class EchoServer {
                     String str = in.readLine();
                     while (!str.isEmpty()) {
                         if (str.contains("=Bye ")) {
+                            out.write("HTTP/1.1 200 OK\r\n".getBytes());
                             server.close();
-                            break;
                         }
                         System.out.println(str);
                         str = in.readLine();
