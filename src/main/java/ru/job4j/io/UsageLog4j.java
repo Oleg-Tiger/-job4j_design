@@ -16,7 +16,11 @@ public class UsageLog4j {
         double d = 0.123123;
         char ch = 80;
         boolean tr = true;
-
         LOG.debug("{}, {}, {}, {}, {}, {}, {}, {}", b, s, i, l, f, d, ch, tr);
+        try {
+            throw new Exception("Not supported code");
+        } catch (Exception e) {
+            LOG.error("Exception in log example", e);
+        }
     }
 }
