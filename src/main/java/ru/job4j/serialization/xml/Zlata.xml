@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zlata sex="false" age="1">
+    <owner name="Oleg" age="29" city="Voskresensk"/>
+    <commands>
+        <command>Лежать</command>
+        <command>Сидеть</command>
+        <command>Фас</command>
+    </commands>
+</zlata>
