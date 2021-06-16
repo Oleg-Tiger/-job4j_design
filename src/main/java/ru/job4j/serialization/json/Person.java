@@ -33,4 +33,16 @@ public class Person {
                 + ", city='" + city + '\''
                 + '}';
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getCity() {
+        return city;
+    }
 }

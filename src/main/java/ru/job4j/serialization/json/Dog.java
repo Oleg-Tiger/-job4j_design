@@ -41,4 +41,24 @@ public class Dog {
                 + ", commands=" + Arrays.toString(commands)
                 + '}';
     }
+
+    public boolean isSex() {
+        return sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Person getOwner() {
+        return owner;
+    }
+
+    public String[] getCommands() {
+        return commands;
+    }
 }
