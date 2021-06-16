@@ -1,10 +1,12 @@
 package ru.job4j.serialization.json;
 
 import org.json.JSONObject;
+import org.json.JSONPropertyIgnore;
 
 public class Wife {
     private Husband husband;
 
+    @JSONPropertyIgnore
     public Husband getHusband() {
         return husband;
     }
