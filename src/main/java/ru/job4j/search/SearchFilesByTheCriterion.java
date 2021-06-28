@@ -29,17 +29,10 @@ public class SearchFilesByTheCriterion {
         if (!Files.exists(Paths.get(dir))) {
             throw new FileNotFoundException("The source directory does not exist");
         }
+        if (!Files.exists(Paths.get(rsl))) {
             Files.createFile(Paths.get(rsl));
-       try (FileOutputStream fos = new FileOutputStream(rsl)) {
-           search(Paths.get(dir), name, type).forEach(x -> {
-               try {
-                   byte[] b = (x.toFile().getAbsolutePath() + System.lineSeparator()).getBytes();
-                   fos.write(b);
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-           });
-       }
+        }
+          writingToAFile(search(Paths.get(dir), name, type), rsl);
     }
 
     private static List<Path> search(Path root, String name, String type) throws IOException {
@@ -54,6 +47,19 @@ public class SearchFilesByTheCriterion {
         SearchFiles searcher = new SearchFiles(criterion);
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
+    }
+
+    private static void writingToAFile(List<Path> paths, String rsl) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(rsl)) {
+            paths.forEach(x -> {
+                byte[] b = (x.toFile().getAbsolutePath() + System.lineSeparator()).getBytes();
+                try {
+                    fos.write(b);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 }
 
