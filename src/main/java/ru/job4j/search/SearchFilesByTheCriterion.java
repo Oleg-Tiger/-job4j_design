@@ -49,16 +49,10 @@ public class SearchFilesByTheCriterion {
         return searcher.getPaths();
     }
 
-    private static void writingToAFile(List<Path> paths, String rsl) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(rsl)) {
-            paths.forEach(x -> {
-                byte[] b = (x.toFile().getAbsolutePath() + System.lineSeparator()).getBytes();
-                try {
-                    fos.write(b);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+    private static void writingToAFile(List<Path> paths, String rsl) throws FileNotFoundException {
+        try (PrintWriter writer = new PrintWriter(rsl)) {
+            paths.stream()
+            .forEach(path -> writer.println(path.toFile().getAbsolutePath()));
         }
     }
 }
