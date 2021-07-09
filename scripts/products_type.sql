@@ -23,7 +23,7 @@ from product as p join type as t on p.type_id = t.id
 where t.name = 'СЫР' or t.name = 'Сыр';
 
 /* Написать запрос получения всех продуктов, у кого в имени есть слово "мороженое" */
-select * from product where name like ('мороженое') or name like('%Мороженое%');
+select * from product where name like ('%мороженое%') or name like('%Мороженое%');
 
 /* Написать запрос, который выводит все продукты, срок годности которых уже истек */
 select name, expired from product where expired < current_date;
@@ -36,7 +36,7 @@ select name, price from product where price = (select max(price) from product);
 select t.name as Тип, count(*) as Количество from type as t join product as p on t.id = p.type_id
 group by t.name;
 
-/* Написать запрос получение всех продуктов с типом "СЫР" и "МОЛОКО" */
+/* Написать запрос на получение всех продуктов с типом "СЫР" и "МОЛОКО" */
 select p.name as Продукт, p.expired as Срок_годности, p.price as Цена
 from product as p join type as t on p.type_id = t.id
 where t.name = 'СЫР' or t.name = 'Сыр' or t.name = 'МОЛОКО' or t.name = 'Молоко' ;
