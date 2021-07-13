@@ -79,16 +79,17 @@ public class TableEditor implements AutoCloseable {
     }
 
     public static void main(String[] args) throws Exception {
-        TableEditor te = new TableEditor(new Properties());
-        te.createTable("NewTable");
-        System.out.println(getTableScheme(te.connection, "NewTable"));
-        te.addColumn("NewTable", "name", "varchar(255)");
-        te.addColumn("NewTable", "age", "int");
-        System.out.println(getTableScheme(te.connection, "NewTable"));
-        te.renameColumn("NewTable", "age", "aaage");
-        System.out.println(getTableScheme(te.connection, "NewTable"));
-        te.dropColumn("NewTable", "aaage");
-        System.out.println(getTableScheme(te.connection, "NewTable"));
-        te.dropTable("NewTable");
+        try (TableEditor te = new TableEditor(new Properties())) {
+            te.createTable("NewTable");
+            System.out.println(getTableScheme(te.connection, "NewTable"));
+            te.addColumn("NewTable", "name", "varchar(255)");
+            te.addColumn("NewTable", "age", "int");
+            System.out.println(getTableScheme(te.connection, "NewTable"));
+            te.renameColumn("NewTable", "age", "aaage");
+            System.out.println(getTableScheme(te.connection, "NewTable"));
+            te.dropColumn("NewTable", "aaage");
+            System.out.println(getTableScheme(te.connection, "NewTable"));
+            te.dropTable("NewTable");
+        }
     }
 }
