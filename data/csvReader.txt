@@ -1,0 +1,4 @@
+name; age; city
+Ivan; 18; Moscow
+Andrey; 25; Volgograd
+Alexey; 30; Samara
