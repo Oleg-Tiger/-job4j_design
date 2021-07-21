@@ -41,24 +41,21 @@ public class CSVReader {
              PrintStream printStream = new PrintStream(out)) {
             while (scanner.hasNextLine()) {
                 String[] columns = scanner.nextLine().split(delimiter);
-                if (firstLine) {
-                    for (int i = 0; i < columns.length; i++) {
-                        String columnWithoutSpace = columns[i].trim();
+                for (int i = 0; i < columns.length; i++) {
+                    String columnWithoutSpace = columns[i].trim();
+                    if (firstLine) {
                         if (filters.contains(columnWithoutSpace)) {
                             printStream.printf("\t%s\t ", columnWithoutSpace);
                             indexes.add(i);
                         }
-                    }
-                    printStream.println();
-                    firstLine = false;
-                } else {
-                    for (int i = 0; i < columns.length; i++) {
+                    } else {
                         if (indexes.contains(i)) {
-                            printStream.printf("\t%s\t ", columns[i].trim());
+                            printStream.printf("\t%s\t ", columnWithoutSpace);
                         }
                     }
-                    printStream.println();
                 }
+                printStream.println();
+                firstLine = false;
             }
         }
     }
