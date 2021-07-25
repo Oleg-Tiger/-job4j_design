@@ -29,16 +29,18 @@ public class CSVReader {
         if (out.equals("stdout")) {
             write(System.out, filters, path, delimiter);
         } else {
-            write(new PrintStream(new File(out)), filters, path, delimiter);
+            try (PrintStream ps = new PrintStream(new File(out))) {
+                write(ps, filters, path, delimiter);
+            }
         }
     }
 
-    private static void write(PrintStream out, Set<String> filters, String path, String delimiter)
+    private static void write(PrintStream ps, Set<String> filters, String path, String delimiter)
             throws FileNotFoundException {
         boolean firstLine = true;
         Set<Integer> indexes = new HashSet<>();
         try (Scanner scanner = new Scanner(new File(path));
-             PrintStream printStream = new PrintStream(out)) {
+             PrintStream printStream = new PrintStream(ps)) {
             while (scanner.hasNextLine()) {
                 String[] columns = scanner.nextLine().split(delimiter);
                 for (int i = 0; i < columns.length; i++) {
